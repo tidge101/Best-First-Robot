@@ -43,12 +43,18 @@ int main(int argc, char *argv[]){
 	N = stoi(line);
 
 	grid = parseGrid(filename);
+	for(int i = 0; i < N; i++){
+		for(int j = 0; j < N; j++){
+				cout << grid[i][j];
+		}
+		cout << "\n";
+	}
 	// Traverse grid and set variables
 	for(int i = 0; i < N; i++){
 		for(int j = 0; j < N; j++){
-				if(grid[i][j]) = 'i'){initialState = (i,j);}
-				if(grid[i][j]) = 'g'){goalState = (i,j);}
-				if(grid[i][j]) = '+'){obstacles.append((i,j));}
+				if(grid[i][j] == 'i'){initialState = (i,j);}
+				if(grid[i][j] == 'g'){goalState = (i,j);}
+				if(grid[i][j] == '+'){obstacles.append((i,j));}
 		}
 	}
 
