@@ -3,6 +3,10 @@ import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.PriorityQueue;
 import java.util.Scanner;
+import java.io.*;
+import java.util.*;
+import java.util.ArrayList;
+
 
 public class BestFirstSearch
 {
@@ -10,7 +14,7 @@ public class BestFirstSearch
     private int heuristicvalues[];
     private int numberOfNodes;
 
-    public static final int MAX_VALUE = 999;
+    public static final int MAX_VALUE = 100;
 
     public BestFirstSearch(int numberOfNodes)
     {
@@ -21,7 +25,7 @@ public class BestFirstSearch
 
     public void bestFirstSearch(int adjacencyMatrix[][], int[] heuristicvalues,int source)
     {
-        int evaluationNode;
+        int currentNode;
         int destinationNode;
         int visited[] = new int [numberOfNodes + 1];
         this.heuristicvalues = heuristicvalues;
@@ -31,15 +35,15 @@ public class BestFirstSearch
 
         while (!priorityQueue.isEmpty())
         {
-            evaluationNode = getNodeWithMinimumHeuristicValue();
+            currentNode = getNodeWithMinimumHeuristicValue();
             destinationNode = 1;
 
-            System.out.print(evaluationNode + "\t");
+            System.out.print(currentNode + "\t");
             while (destinationNode <= numberOfNodes)
             {
                 Vertex vertex = new Vertex(destinationNode,this.heuristicvalues[destinationNode]);
-                if ((adjacencyMatrix[evaluationNode][destinationNode] != MAX_VALUE
-                      && evaluationNode != destinationNode)&& visited[destinationNode] == 0)
+                if ((adjacencyMatrix[currentNode][destinationNode] != MAX_VALUE
+                      && currentNode != destinationNode)&& visited[destinationNode] == 0)
                 {
                     priorityQueue.add(vertex);
                     visited[destinationNode] = 1;
@@ -57,33 +61,61 @@ public class BestFirstSearch
 
     public static void main(String... arg)
     {
-        int adjacency_matrix[][];
         int number_of_vertices;
         int source = 0;
         int heuristicvalues[];
 
         Scanner scan = new Scanner(System.in);
+        BufferedReader br = null;
+        String filename = null;
+        char map[][] = null;
+        String line = "";
         try
-        {
-            System.out.println("Enter the number of vertices");
-            number_of_vertices = scan.nextInt();
-            adjacency_matrix = new int[number_of_vertices + 1][number_of_vertices + 1];
+        {   //open a file
+            System.out.println("Enter the name of a file: ");
+            filename = scan.nextLine();
+            br = new BufferedReader(new FileReader(filename));
+
+            //get first line of input file - N
+            line = br.readLine();
+            int N = Integer.parseInt(line);
+            System.out.println(N);
+
+            //get the map in a 2D array
+            map = new char[N][N];
+            line = br.readLine();
+            for(int i = 0; i< N+1;i++){
+                line = br.readLine();
+                for(int j = 0; j < N+1; j++){
+                      map[i][j] = line.charAt(j);
+                  }
+            }
+            for(int i = 0; i< N+1;i++){
+                  for(int j = 0; j < N+1; j++){
+                      System.out.print(map[i][j]);
+                  }
+                  System.out.println();
+            }
+/*
+            //Use N for the number of Vertices
+            number_of_vertices = N;
+            map = new int[number_of_vertices + 1][number_of_vertices + 1];
             heuristicvalues = new int[number_of_vertices + 1];
 
-            System.out.println("Enter the Weighted Matrix for the graph");
+            //System.out.println("Enter the Weighted Matrix for the graph");
             for (int i = 1; i <= number_of_vertices; i++)
             {
                 for (int j = 1; j <= number_of_vertices; j++)
                 {
-                    adjacency_matrix[i][j] = scan.nextInt();
+                    map[i][j] = scan.nextInt();
                     if (i == j)
                     {
-                        adjacency_matrix[i][j] = 0;
+                        map[i][j] = 0;
                         continue;
                     }
-                    if (adjacency_matrix[i][j] == 0)
+                    if (map[i][j] == 0)
                     {
-                        adjacency_matrix[i][j] = MAX_VALUE;
+                        map[i][j] = MAX_VALUE;
                     }
                 }
             }
@@ -91,9 +123,9 @@ public class BestFirstSearch
             {
                 for (int j = 1; j <= number_of_vertices; j++)
                 {
-                    if (adjacency_matrix[i][j] == 1 && adjacency_matrix[j][i] == 0)
+                    if (map[i][j] == 1 && map[j][i] == 0)
                     {
-                        adjacency_matrix[j][i] = 1;
+                        map[j][i] = 1;
                     }
                 }
             }
@@ -111,12 +143,15 @@ public class BestFirstSearch
 
             System.out.println("The graph is explored as follows");
             BestFirstSearch bestFirstSearch = new BestFirstSearch(number_of_vertices);
-            bestFirstSearch.bestFirstSearch(adjacency_matrix, heuristicvalues,source);
+            bestFirstSearch.bestFirstSearch(map, heuristicvalues,source);
 
-       } catch (InputMismatchException inputMismatch)
-       {
+*/
+       } catch (InputMismatchException inputMismatch){
            System.out.println("Wrong Input Format");
-       }
+       }catch (FileNotFoundException e){
+           System.out.println("File not found :(");
+       }catch (IOException e) {
+           e.printStackTrace();}
        scan.close();
    }
 }
