@@ -61,9 +61,6 @@ public class BestFirstSearch
 
     public static void main(String... arg)
     {
-        int number_of_vertices;
-        int source = 0;
-        int heuristicvalues[];
 
         Scanner scan = new Scanner(System.in);
         BufferedReader br = null;
@@ -83,15 +80,15 @@ public class BestFirstSearch
 
             //get the map in a 2D array
             map = new char[N][N];
-            line = br.readLine();
-            for(int i = 0; i< N+1;i++){
+            //line = br.readLine();
+            for(int i = 0; i< N;i++){
                 line = br.readLine();
-                for(int j = 0; j < N+1; j++){
+                for(int j = 0; j < N; j++){
                       map[i][j] = line.charAt(j);
                   }
             }
-            for(int i = 0; i< N+1;i++){
-                  for(int j = 0; j < N+1; j++){
+            for(int i = 0; i< N;i++){
+                  for(int j = 0; j < N; j++){
                       System.out.print(map[i][j]);
                   }
                   System.out.println();
