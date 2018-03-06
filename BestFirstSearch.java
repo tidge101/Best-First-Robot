@@ -143,7 +143,7 @@ public class BestFirstSearch
             obstacles = new ArrayList<>();
             for(int i = 0; i < N;i++){
                 for(int j = 0; j < N; j++){
-                      obstacles.add(new Tuple<>(i,j));
+                      if(map[i][j] == '+'){obstacles.add(new Tuple<>(i,j));}
                   }
             }
             nodes = new ArrayList<>();
@@ -161,7 +161,7 @@ public class BestFirstSearch
               if(currentNode.b < N-1){rightNode = new Tuple<>(currentNode.a,currentNode.b+1);}
               if(currentNode.a > 0){upNode = new Tuple<>(currentNode.a-1,currentNode.b);}
               if(currentNode.a < N-1){downNode = new Tuple<>(currentNode.a+1,currentNode.b);}
-              System.out.println("Current Node: " + currentNode.a + "," + currentNode.b);
+              //System.out.println("Current Node: " + currentNode.a + "," + currentNode.b);
               obstacles.add(currentNode);
               if (!obstacles.contains(leftNode)){ nodes.add(leftNode);}
               if (!obstacles.contains(rightNode)){ nodes.add(rightNode);}
