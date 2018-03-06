@@ -86,6 +86,7 @@ public class BestFirstSearch
             //
             BestFirstSearch bfs = new BestFirstSearch(map);
 
+            System.out.println();
             System.out.println("Euclidean");
             // Euclidean
             int goalReached = 0;
@@ -138,6 +139,7 @@ public class BestFirstSearch
                   }
                   System.out.println();
             }
+            System.out.println("Number of steps taken: " + path.size());
 
             obstacles.clear();
             obstacles = new ArrayList<>();
@@ -147,7 +149,9 @@ public class BestFirstSearch
                   }
             }
             nodes = new ArrayList<>();
+            path.clear();
 
+            System.out.println();
             System.out.println("Manhattan");
             // Manhattan
             goalReached = 0;
@@ -198,10 +202,139 @@ public class BestFirstSearch
                   }
                   System.out.println();
             }
+            System.out.println("Number of steps taken: " + path.size());
 
             // AStarEuclidean
+            obstacles.clear();
+            obstacles = new ArrayList<>();
+            for(int i = 0; i < N;i++){
+                for(int j = 0; j < N; j++){
+                      if(map[i][j] == '+'){obstacles.add(new Tuple<>(i,j));}
+                  }
+            }
+            nodes = new ArrayList<>();
+            path.clear();
+
+            System.out.println();
+            System.out.println("A* Euclidean");
+            // Manhattan
+            goalReached = 0;
+            int count = 0;
+            currentNode = new Tuple<Integer, Integer>(initialState.a,initialState.b);
+            while(goalReached == 0){
+              Tuple<Integer, Integer> leftNode = new Tuple<Integer, Integer>(1000,1000);
+              Tuple<Integer, Integer> rightNode = new Tuple<Integer, Integer>(1000,1000);
+              Tuple<Integer, Integer> upNode = new Tuple<Integer, Integer>(1000,1000);
+              Tuple<Integer, Integer> downNode = new Tuple<Integer, Integer>(1000,1000);
+              if(currentNode.b > 0){leftNode = new Tuple<>(currentNode.a,currentNode.b-1);}
+              if(currentNode.b < N-1){rightNode = new Tuple<>(currentNode.a,currentNode.b+1);}
+              if(currentNode.a > 0){upNode = new Tuple<>(currentNode.a-1,currentNode.b);}
+              if(currentNode.a < N-1){downNode = new Tuple<>(currentNode.a+1,currentNode.b);}
+              //System.out.println("Current Node: " + currentNode.a + "," + currentNode.b);
+              obstacles.add(currentNode);
+              if (!obstacles.contains(leftNode)){ nodes.add(leftNode);}
+              if (!obstacles.contains(rightNode)){ nodes.add(rightNode);}
+              if (!obstacles.contains(upNode)){ nodes.add(upNode);}
+              if (!obstacles.contains(downNode)){ nodes.add(downNode);}
+
+              double min = 1000;
+              for(int i = 0; i < nodes.size(); i++){
+                Tuple<Integer, Integer> tempNode = nodes.get(i);
+                double tempMin = AStarEuclidean(goalState.a, goalState.b, tempNode.a, tempNode.b, count);
+                if (tempMin < min) {
+                  min = tempMin;
+                  currentNode = tempNode;
+                }
+              }
+              nodes.clear();
+
+              count++;
+              if(map[currentNode.a][currentNode.b] == 'g'){goalReached = 1;break;}
+              path.add(new Tuple<>(currentNode.a, currentNode.b));
+            }
+
+            for(int i = 0; i< N;i++){
+                  for(int j = 0; j < N; j++){
+                      for(int k = 0; k < path.size(); k++){
+                        Tuple<Integer,Integer> someTup = path.get(k);
+                        if(i == someTup.a && j == someTup.b){map[i][j] = 'o';}
+                      }
+
+                  }
+            }
+            for(int i = 0; i< N;i++){
+                  for(int j = 0; j < N; j++){
+                      System.out.print(map[i][j]);
+                  }
+                  System.out.println();
+            }
+            System.out.println("Number of steps taken: " + path.size());
 
             // AStarManhattan
+            obstacles.clear();
+            obstacles = new ArrayList<>();
+            for(int i = 0; i < N;i++){
+                for(int j = 0; j < N; j++){
+                      if(map[i][j] == '+'){obstacles.add(new Tuple<>(i,j));}
+                  }
+            }
+            nodes = new ArrayList<>();
+            path.clear();
+
+            System.out.println();
+            System.out.println("A* Manhattan");
+            // Manhattan
+            goalReached = 0;
+            count = 0;
+            currentNode = new Tuple<Integer, Integer>(initialState.a,initialState.b);
+            while(goalReached == 0){
+              Tuple<Integer, Integer> leftNode = new Tuple<Integer, Integer>(1000,1000);
+              Tuple<Integer, Integer> rightNode = new Tuple<Integer, Integer>(1000,1000);
+              Tuple<Integer, Integer> upNode = new Tuple<Integer, Integer>(1000,1000);
+              Tuple<Integer, Integer> downNode = new Tuple<Integer, Integer>(1000,1000);
+              if(currentNode.b > 0){leftNode = new Tuple<>(currentNode.a,currentNode.b-1);}
+              if(currentNode.b < N-1){rightNode = new Tuple<>(currentNode.a,currentNode.b+1);}
+              if(currentNode.a > 0){upNode = new Tuple<>(currentNode.a-1,currentNode.b);}
+              if(currentNode.a < N-1){downNode = new Tuple<>(currentNode.a+1,currentNode.b);}
+              //System.out.println("Current Node: " + currentNode.a + "," + currentNode.b);
+              obstacles.add(currentNode);
+              if (!obstacles.contains(leftNode)){ nodes.add(leftNode);}
+              if (!obstacles.contains(rightNode)){ nodes.add(rightNode);}
+              if (!obstacles.contains(upNode)){ nodes.add(upNode);}
+              if (!obstacles.contains(downNode)){ nodes.add(downNode);}
+
+              double min = 1000;
+              for(int i = 0; i < nodes.size(); i++){
+                Tuple<Integer, Integer> tempNode = nodes.get(i);
+                double tempMin = AStarManhattan(goalState.a, goalState.b, tempNode.a, tempNode.b, count);
+                if (tempMin < min) {
+                  min = tempMin;
+                  currentNode = tempNode;
+                }
+              }
+              nodes.clear();
+
+              if(map[currentNode.a][currentNode.b] == 'g'){goalReached = 1;break;}
+              path.add(new Tuple<>(currentNode.a, currentNode.b));
+              count++;
+            }
+
+            for(int i = 0; i< N;i++){
+                  for(int j = 0; j < N; j++){
+                      for(int k = 0; k < path.size(); k++){
+                        Tuple<Integer,Integer> someTup = path.get(k);
+                        if(i == someTup.a && j == someTup.b){map[i][j] = 'o';}
+                      }
+
+                  }
+            }
+            for(int i = 0; i< N;i++){
+                  for(int j = 0; j < N; j++){
+                      System.out.print(map[i][j]);
+                  }
+                  System.out.println();
+            }
+            System.out.println("Number of steps taken: " + path.size());
 
 
        } catch (InputMismatchException inputMismatch){
