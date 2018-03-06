@@ -139,6 +139,15 @@ public class BestFirstSearch
                   System.out.println();
             }
 
+            obstacles.clear();
+            obstacles = new ArrayList<>();
+            for(int i = 0; i < N;i++){
+                for(int j = 0; j < N; j++){
+                      obstacles.add(new Tuple<>(i,j));
+                  }
+            }
+            nodes = new ArrayList<>();
+
             System.out.println("Manhattan");
             // Manhattan
             goalReached = 0;
